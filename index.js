@@ -6,12 +6,20 @@ const app = express();
 const port = 3000;
 
 // Configuração do MySQL
+// const connection = mysql.createConnection({
+//   host: 'localhost',
+//   user: 'root', // Seu nome de usuário do MySQL
+//   password: 'mysql@123', // Sua senha do MySQL
+//   database: 'usersdb'
+// });
+
 const connection = mysql.createConnection({
   host: 'localhost',
-  user: 'root', // Seu nome de usuário do MySQL
-  password: 'mysql@123', // Sua senha do MySQL
-  database: 'usersdb'
+  user: process.env.MYSQL_USER, 
+  password: process.env.MYSQL_PASSWORD,
+  database: process.env.MYSQL_DATABASE
 });
+
 
 // Conectar ao banco de dados
 connection.connect((err) => {
@@ -30,6 +38,7 @@ app.post('/users', (req, res) => {
   const INSERT_USER_QUERY = `INSERT INTO users (name, email) VALUES (?, ?)`;
   connection.query(INSERT_USER_QUERY, [name, email], (err, results) => {
     if (err) throw err;
+    res.statusCode = 201; 
     res.send('Usuário criado com sucesso');
   });
 });
@@ -58,3 +67,5 @@ app.get('/users/:id', (req, res) => {
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
 });
+
+module.exports = app; 

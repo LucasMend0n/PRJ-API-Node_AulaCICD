@@ -31,6 +31,6 @@ jobs:
       - name: install cliente mysql
         run: sudo apt install mysql-client
       - name: create tables
-        run: mysql -u root -p mysql@123 usersdb < estrutura.sql
+        run: sudo mysql usersdb < estrutura.sql
       - name: Run tests
         run: npm test

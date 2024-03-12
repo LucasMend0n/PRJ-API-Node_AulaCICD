@@ -13,6 +13,7 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
+          MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: mysql@123
           MYSQL_DATABASE: usersdb
         ports:
@@ -22,10 +23,14 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: "14"
+          node-version: "18"
       - name: Install dependencies
         run: npm install
       - name: Start MySQL
         run: sudo /etc/init.d/mysql start
+      - name: install cliente mysql
+        run: sudo apt install mysql-client
+      - name: create tables
+        run: mysql -h localhost usersdb -u root -p mysql@123 < estrutura.sql
       - name: Run tests
         run: npm test

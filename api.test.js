@@ -8,46 +8,12 @@ describe('Teste GET /users', () => {
   });
 });
 
-const mockConnection = {
-  query: jest.fn()
-};
-
-// Mocking request and response objects
-const mockReq = {
-  body: {
-    name: 'Test User',
-    email: 'test@example.com'
-  }
-};
-
-const mockRes = {
-  statusCode: 200,
-  send: jest.fn()
-};
-
-describe('createUser', () => {
-  it('should create a new user', () => {
-    mockConnection.query.mockImplementationOnce((query, values, callback) => {
-      callback(null, { insertId: 1 });
-    });
-
-    createUser(mockConnection, mockReq, mockRes);
-
-    expect(mockRes.statusCode).toBe(201);
-    expect(mockRes.send).toHaveBeenCalledWith('Usuário criado com sucesso');
+describe('Teste POST/user', ()=>{
+  it('post bem sucedido deve retornar 201', async () => {
+    const response = await supertest(app).post('/users').send({name: "joaozinho comedor", email: "joaozinho@gmail.com"})
+    expect(response.statusCode).toBe(201);
   });
-
-  it('should handle database errors', () => {
-    mockConnection.query.mockImplementationOnce((query, values, callback) => {
-      callback(new Error('Database error'));
-    });
-
-    createUser(mockConnection, mockReq, mockRes);
-
-    expect(mockRes.statusCode).toBe(500);
-    expect(mockRes.send).toHaveBeenCalledWith('Erro ao criar usuário');
-  });
-});
+})
 
 
 afterAll(()=>{

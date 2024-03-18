@@ -32,6 +32,6 @@ jobs:
       - name: install cliente mysql
         run: sudo apt install mysql-client
       - name: create tables
-        run:  mysql -h --port 3306 -u root -pmysql@123 usersdb < estrutura.sql
+        run:  mysql -h 127.0.0.1 --port 3306 -u root -pmysql@123 usersdb < estrutura.sql
       - name: Run tests
         run: npm test

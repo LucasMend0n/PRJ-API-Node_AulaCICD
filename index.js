@@ -39,7 +39,7 @@ app.post('/users', (req, res) => {
   connection.query(INSERT_USER_QUERY, [name, email], (err, results) => {
     if (err) throw err;
     res.statusCode = 201; 
-    res.send('Usuário criado com sucesso');
+    res.send({id: results.insertId});
   });
 });
 
@@ -61,6 +61,32 @@ app.get('/users/:id', (req, res) => {
   });
 });
 
+app.delete('/users/:id', (req, res) => {
+  const userId = req.params.id; 
+
+  const deleteQuery = `DELETE FROM users WHERE id = ?`; 
+  connection.query(deleteQuery, [userId], (err, results) =>{
+    if(err) throw err; 
+
+    res.statusCode = 204; 
+    res.send(results)
+  })
+
+});
+
+app.put('/users/:id', (req, res) => {
+  const userId = req.params.id; 
+  const {name, email} = req.body; 
+  const deleteQuery = `UPDATE users SET name = ?, email = ? WHERE id = ?`; 
+
+  connection.query(deleteQuery, [name, email, userId], (err, results) =>{
+    if(err) throw err; 
+
+    res.statusCode = 204; 
+    res.send(results)
+  })
+
+});
 
 
 // Iniciar o servidor
